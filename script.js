@@ -67,10 +67,30 @@ async function updateIntegrityBadge(pdfUrl, manifestUrl) {
     }
 }
 
+// Load KPIs from evidence pack
+async function loadKPIs() {
+    try {
+        const response = await fetch('/downloads/evidence/evidence_pack.json');
+        const ev = await response.json();
+        const k = ev.kpis_7d || {};
+        const el = id => document.getElementById(id);
+        el('kpi-redemptions').textContent = k.redemptions_per_day ?? '—';
+        el('kpi-med').textContent = (k.median_latency_hours ?? '—') + 'h';
+        el('kpi-p95').textContent = (k.p95_latency_hours ?? '—') + 'h';
+        el('kpi-signer').textContent = (k.signer_participation_pct ?? '—') + '%';
+        el('kpi-stale').textContent = (k.stale_attestation_pct ?? '—') + '%';
+        el('kpi-kdrift').textContent = (k.amm_k_drift_pct ?? '—') + '%';
+        el('kpi-ratio').textContent = k.reserve_to_float_ratio ?? '—';
+    } catch (error) {
+        console.error("Failed to load KPIs:", error);
+    }
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     updateMetrics();
     simulateUpdates();
+    loadKPIs();
     // Update integrity badge for downloads
     updateIntegrityBadge(
         "/downloads/audit/Unykorn_XAUFTH_uUSD_Audit_2025-09-18.pdf",

@@ -1,0 +1,21 @@
+name: Integrity Check
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compute SHA256
+        id: sha
+        run: |
+          set -e
+          pdf="downloads/audit/Unykorn_XAUFTH_uUSD_Audit_2025-09-18.pdf"
+          manifest="downloads/audit/Unykorn_XAUFTH_uUSD_Audit_2025-09-18_manifest.json"
+          want=$(jq -r .sha256 "$manifest")
+          got=$(sha256sum "$pdf" | awk '{print $1}')
+          echo "want=$want"
+          echo "got=$got"
+          test "$want" = "$got" || (echo "ERROR: SHA256 mismatch" && exit 1)

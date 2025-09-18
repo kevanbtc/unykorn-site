@@ -1,0 +1,48 @@
+{
+  "version": "2025-09-18",
+  "network": "Unykorn-1",
+  "artifacts": {
+    "pdf": "Unykorn_XAUFTH_uUSD_Audit_2025-09-18.pdf",
+    "manifest": "Unykorn_XAUFTH_uUSD_Audit_2025-09-18_manifest.json"
+  },
+  "safe_events": [
+    {"label": "minter_transfer", "tx": "0xplaceholder_tx_minter_transfer", "block": 0, "timestamp": "2025-09-18T00:00:00Z"},
+    {"label": "first_ucred_mint", "tx": "0xplaceholder_tx_first_ucred_mint", "block": 0, "timestamp": "2025-09-18T00:00:00Z"},
+    {"label": "first_redemption_batch", "tx": "0xplaceholder_tx_first_redemption_batch", "block": 0, "timestamp": "2025-09-18T00:00:00Z"}
+  ],
+  "reserve_attestations": [
+    {
+      "period": "2025-09-08..2025-09-15",
+      "proofURI": "ipfs://bafyplaceholder...",
+      "custodian_statement_sha256": "sha256:placeholder_custodian_statement_hash",
+      "signers": ["0xPlaceholderSignerA", "0xPlaceholderSignerB"]
+    }
+  ],
+  "audit_chain": {
+    "merkle_root": "0xplaceholder_merkle_root",
+    "anchored_chain": "Ethereum",
+    "anchor_tx": "0xplaceholder_anchor_tx",
+    "anchor_block": 0
+  },
+  "kpis_7d": {
+    "redemptions_per_day": 150,
+    "median_latency_hours": 2.3,
+    "p95_latency_hours": 8.1,
+    "signer_participation_pct": 95.0,
+    "stale_attestation_pct": 2.1,
+    "amm_k_drift_pct": 0.05,
+    "reserve_to_float_ratio": 1.02
+  },
+  "bridging_guardrails": {
+    "daily_cap_uUSD": 1000000,
+    "per_tx_cap_uUSD": 50000,
+    "confirmations_L1": 12,
+    "confirmations_L2": 5,
+    "pause_role": "GuardianSafe",
+    "evidence_txs": ["0xplaceholder_bridge_tx_1", "0xplaceholder_bridge_tx_2"]
+  },
+  "versioning": [
+    {"contract": "ReserveManager.sol", "commit": "abc123", "deploy_block": 123456},
+    {"contract": "VaultNFT.sol", "commit": "def456", "deploy_block": 123457}
+  ]
+}

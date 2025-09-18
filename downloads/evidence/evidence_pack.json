@@ -19,10 +19,10 @@
     }
   ],
   "audit_chain": {
-    "merkle_root": "0xplaceholder_merkle_root",
-    "anchored_chain": "Ethereum",
-    "anchor_tx": "0xplaceholder_anchor_tx",
-    "anchor_block": 0
+    "merkle_root": "0xplaceholder_merkle_root_for_zip",
+    "anchored_chain": "Unykorn-1",
+    "anchor_tx": "0xplaceholder_anchor_tx_hash",
+    "anchor_block": 123456
   },
   "kpis_7d": {
     "redemptions_per_day": 150,

@@ -1,0 +1,32 @@
+# Security Headers Configuration
+# This file should be deployed to the web server root
+
+# Content Security Policy
+Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';
+
+# Prevent MIME type sniffing
+X-Content-Type-Options: nosniff
+
+# Prevent embedding in frames
+X-Frame-Options: DENY
+
+# Enable XSS filtering
+X-XSS-Protection: 1; mode=block
+
+# Control referrer information
+Referrer-Policy: strict-origin-when-cross-origin
+
+# HTTPS Transport Security (uncomment when using HTTPS)
+# Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+
+# Permissions Policy
+Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+
+# Cross-Origin Resource Policy
+Cross-Origin-Resource-Policy: same-origin
+
+# Cross-Origin Embedder Policy
+Cross-Origin-Embedder-Policy: require-corp
+
+# Cross-Origin Opener Policy
+Cross-Origin-Opener-Policy: same-origin

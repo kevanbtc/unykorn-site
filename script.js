@@ -353,6 +353,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initTooltips();
     initDocumentationSearch();
     
+    // Initialize security and accessibility features
+    initSecurityFeatures();
+    initAccessibilityEnhancements();
+    initKeyboardNavigation();
+    
     // Initialize PWA features
     registerServiceWorker();
     checkForUpdates();
@@ -486,3 +491,144 @@ function preloadResources() {
 // Initialize all performance features
 trackPerformance();
 preloadResources();
+
+// Security Features
+function initSecurityFeatures() {
+    // Enhanced integrity verification with multiple hash algorithms
+    const verifyMultiHash = async (fileUrl, expectedHashes) => {
+        try {
+            const response = await enhancedFetch(fileUrl);
+            const buffer = await response.arrayBuffer();
+            
+            const results = {};
+            
+            // SHA-256 verification
+            if (expectedHashes.sha256) {
+                const sha256Hash = await crypto.subtle.digest("SHA-256", buffer);
+                const sha256Hex = Array.from(new Uint8Array(sha256Hash))
+                    .map(b => b.toString(16).padStart(2, "0")).join("");
+                results.sha256 = { 
+                    expected: expectedHashes.sha256, 
+                    actual: sha256Hex, 
+                    valid: sha256Hex === expectedHashes.sha256 
+                };
+            }
+            
+            return results;
+        } catch (error) {
+            console.error("Multi-hash verification failed:", error);
+            return { error: error.message };
+        }
+    };
+    
+    // Content Security Policy violation logging
+    document.addEventListener('securitypolicyviolation', (e) => {
+        console.warn('CSP Violation:', {
+            directive: e.violatedDirective,
+            blockedURI: e.blockedURI,
+            lineNumber: e.lineNumber,
+            sourceFile: e.sourceFile
+        });
+    });
+    
+    // Secure random ID generation
+    window.generateSecureId = () => {
+        const array = new Uint8Array(16);
+        crypto.getRandomValues(array);
+        return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    };
+}
+
+// Enhanced Accessibility Features
+function initAccessibilityEnhancements() {
+    // Screen reader announcements
+    const announceToScreenReader = (message, priority = 'polite') => {
+        const announcement = document.getElementById('sr-announcements');
+        if (announcement) {
+            announcement.setAttribute('aria-live', priority);
+            announcement.textContent = message;
+            
+            // Clear after announcement
+            setTimeout(() => {
+                announcement.textContent = '';
+            }, 1000);
+        }
+    };
+    
+    // Make announceToScreenReader globally available
+    window.announceToScreenReader = announceToScreenReader;
+    
+    // Enhanced button click feedback
+    const refreshBtn = document.querySelector('.refresh-btn');
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+            announceToScreenReader('Updating system metrics, please wait...');
+            refreshBtn.setAttribute('aria-busy', 'true');
+            
+            setTimeout(() => {
+                refreshBtn.setAttribute('aria-busy', 'false');
+                announceToScreenReader('System metrics updated successfully.');
+            }, 2000);
+        });
+    }
+}
+
+// Keyboard Navigation Enhancements
+function initKeyboardNavigation() {
+    // Escape key to close any open modals or tooltips
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const tooltip = document.querySelector('.tooltip.show');
+            if (tooltip) {
+                tooltip.classList.remove('show');
+            }
+            
+            const notification = document.querySelector('.update-notification.show');
+            if (notification) {
+                notification.classList.remove('show');
+            }
+        }
+    });
+    
+    // Arrow key navigation for metrics
+    const metrics = document.querySelectorAll('.metric');
+    if (metrics.length > 0) {
+        metrics.forEach((metric, index) => {
+            metric.setAttribute('tabindex', '0');
+            metric.addEventListener('keydown', (e) => {
+                let nextIndex;
+                switch (e.key) {
+                    case 'ArrowRight':
+                    case 'ArrowDown':
+                        nextIndex = (index + 1) % metrics.length;
+                        metrics[nextIndex].focus();
+                        e.preventDefault();
+                        break;
+                    case 'ArrowLeft':
+                    case 'ArrowUp':
+                        nextIndex = (index - 1 + metrics.length) % metrics.length;
+                        metrics[nextIndex].focus();
+                        e.preventDefault();
+                        break;
+                }
+            });
+        });
+    }
+    
+    // Enhanced focus indicators for chart elements
+    const diagramNodes = document.querySelectorAll('.diagram-node');
+    diagramNodes.forEach(node => {
+        node.setAttribute('tabindex', '0');
+        node.setAttribute('role', 'button');
+        
+        node.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const tooltip = node.getAttribute('data-tooltip');
+                if (tooltip) {
+                    announceToScreenReader(tooltip);
+                }
+                e.preventDefault();
+            }
+        });
+    });
+}

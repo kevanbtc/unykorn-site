@@ -7,11 +7,25 @@
     <meta name="description" content="Sovereign Gold-Backed Stablecoins on Unykorn-1 L1 - Institutional-grade DeFi with audit trails and formal SLAs">
     <meta name="keywords" content="DeFi, gold-backed stablecoin, XAUFTH, uUSD, blockchain, audit">
     
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="XAUFTH/uUSD DeFi Ecosystem">
     <meta property="og:description" content="Sovereign Gold-Backed Stablecoins on Unykorn-1 L1">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://kevanbtc.github.io/unykorn-site">
+    <meta property="og:image" content="https://github.com/user-attachments/assets/03f6d5ad-08e1-45b0-b626-cd05a986aca7">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="XAUFTH/uUSD DeFi Ecosystem">
+    <meta name="twitter:description" content="Sovereign Gold-Backed Stablecoins on Unykorn-1 L1">
+    <meta name="twitter:image" content="https://github.com/user-attachments/assets/03f6d5ad-08e1-45b0-b626-cd05a986aca7">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,22 +49,36 @@
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
     
-    <header>
+    <!-- Screen Reader Announcements -->
+    <div id="sr-announcements" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+    
+    <header role="banner">
         <h1>XAUFTH/uUSD DeFi Ecosystem</h1>
         <p>Sovereign Gold-Backed Stablecoins on Unykorn-1 L1</p>
     </header>
 
-    <nav>
+    <nav role="navigation" aria-label="Main navigation">
         <ul>
-            <li><a href="#overview">Overview</a></li>
-            <li><a href="#architecture">Architecture</a></li>
-            <li><a href="#components">Components</a></li>
-            <li><a href="#flows">Flows</a></li>
-            <li><a href="#status">Status</a></li>
-            <li><a href="#downloads">Downloads</a></li>
-            <li><a href="#docs">Documentation</a></li>
+            <li><a href="#overview" aria-describedby="nav-overview-desc">Overview</a></li>
+            <li><a href="#architecture" aria-describedby="nav-architecture-desc">Architecture</a></li>
+            <li><a href="#components" aria-describedby="nav-components-desc">Components</a></li>
+            <li><a href="#flows" aria-describedby="nav-flows-desc">Flows</a></li>
+            <li><a href="#status" aria-describedby="nav-status-desc">Status</a></li>
+            <li><a href="#downloads" aria-describedby="nav-downloads-desc">Downloads</a></li>
+            <li><a href="#docs" aria-describedby="nav-docs-desc">Documentation</a></li>
         </ul>
     </nav>
+    
+    <!-- Hidden descriptions for screen readers -->
+    <div class="sr-only">
+        <div id="nav-overview-desc">System overview and scorecard</div>
+        <div id="nav-architecture-desc">Technical architecture diagram</div>
+        <div id="nav-components-desc">System components and services</div>
+        <div id="nav-flows-desc">Key operational flows</div>
+        <div id="nav-status-desc">Live system status and metrics</div>
+        <div id="nav-downloads-desc">Audit reports and evidence packages</div>
+        <div id="nav-docs-desc">Technical documentation</div>
+    </div>
 
     <main id="main" role="main">
         <section id="overview">
@@ -284,7 +312,11 @@
                 </ul>
             </div>
             
-            <button onclick="updateMetrics()">Refresh Metrics</button>
+            <button onclick="updateMetrics()" aria-describedby="refresh-desc" class="refresh-btn">
+                <span class="refresh-icon" aria-hidden="true">🔄</span>
+                Refresh Metrics
+            </button>
+            <div id="refresh-desc" class="sr-only">Updates all system metrics with latest data</div>
         </section>
 
         <section id="downloads">

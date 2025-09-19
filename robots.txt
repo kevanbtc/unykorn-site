@@ -1,3 +1,14 @@
 User-agent: *
 Allow: /
+
+# Optimized for search engines
 Sitemap: https://kevanbtc.github.io/unykorn-site/sitemap.xml
+
+# Block access to sensitive files
+Disallow: /sw.js
+Disallow: /.git/
+Disallow: /tmp/
+
+# Performance optimization
+User-agent: *
+Crawl-delay: 1

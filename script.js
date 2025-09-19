@@ -212,6 +212,66 @@ async function loadKPIs() {
     }
 }
 
+// Enhanced lazy loading for images and content
+function initLazyLoading() {
+    if ('IntersectionObserver' in window) {
+        const lazyImages = document.querySelectorAll('img[data-src], svg[data-src]');
+        const lazyContent = document.querySelectorAll('.lazy-content');
+        
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const element = entry.target;
+                    if (element.dataset.src) {
+                        element.src = element.dataset.src;
+                        element.removeAttribute('data-src');
+                    }
+                    element.classList.add('loaded');
+                    observer.unobserve(element);
+                }
+            });
+        });
+        
+        lazyImages.forEach(img => imageObserver.observe(img));
+    }
+}
+
+// Enhanced error handling and retry logic
+function enhancedFetch(url, options = {}) {
+    const maxRetries = 3;
+    let retries = 0;
+    
+    const fetchWithRetry = async () => {
+        try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+            
+            const response = await fetch(url, {
+                ...options,
+                signal: controller.signal
+            });
+            
+            clearTimeout(timeoutId);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return response;
+        } catch (error) {
+            retries++;
+            if (retries <= maxRetries && error.name !== 'AbortError') {
+                console.log(`Retrying fetch for ${url}, attempt ${retries}`);
+                await new Promise(resolve => setTimeout(resolve, 1000 * retries));
+                return fetchWithRetry();
+            }
+            throw error;
+        }
+    };
+    
+    return fetchWithRetry();
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize core functionality
@@ -224,6 +284,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollEffects();
     initNavHighlighting();
     addActiveNavStyles();
+    initLazyLoading();
+    
+    // Initialize PWA features
+    registerServiceWorker();
+    checkForUpdates();
     
     // Update integrity badge for downloads
     updateIntegrityBadge(
@@ -235,14 +300,122 @@ document.addEventListener('DOMContentLoaded', function() {
     document.body.classList.add('loaded');
 });
 
+// Service Worker Registration
+function registerServiceWorker() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js')
+            .then(function(registration) {
+                console.log('Service Worker registered successfully:', registration.scope);
+                
+                // Check for updates
+                registration.addEventListener('updatefound', () => {
+                    const newWorker = registration.installing;
+                    newWorker.addEventListener('statechange', () => {
+                        if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            showUpdateNotification();
+                        }
+                    });
+                });
+            })
+            .catch(function(error) {
+                console.log('Service Worker registration failed:', error);
+            });
+    }
+}
+
+// Check for app updates
+function checkForUpdates() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+            window.location.reload();
+        });
+    }
+}
+
+// Show update notification
+function showUpdateNotification() {
+    const notification = document.createElement('div');
+    notification.className = 'update-notification';
+    notification.innerHTML = `
+        <div class="update-content">
+            <span>A new version is available!</span>
+            <button onclick="updateApp()" class="update-btn">Update</button>
+            <button onclick="dismissUpdate(this)" class="dismiss-btn">×</button>
+        </div>
+    `;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 100);
+}
+
+// Update app
+function updateApp() {
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.getRegistration().then(registration => {
+            if (registration && registration.waiting) {
+                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+        });
+    }
+}
+
+// Dismiss update notification
+function dismissUpdate(button) {
+    const notification = button.closest('.update-notification');
+    notification.classList.remove('show');
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 300);
+}
+
 // Add performance monitoring
 function trackPerformance() {
     if ('performance' in window) {
         window.addEventListener('load', () => {
             const loadTime = performance.now();
             console.log(`Page loaded in ${loadTime.toFixed(2)}ms`);
+            
+            // Track Core Web Vitals
+            if ('PerformanceObserver' in window) {
+                // Largest Contentful Paint
+                const lcpObserver = new PerformanceObserver((list) => {
+                    const entries = list.getEntries();
+                    const lastEntry = entries[entries.length - 1];
+                    console.log('LCP:', lastEntry.startTime);
+                });
+                lcpObserver.observe({entryTypes: ['largest-contentful-paint']});
+                
+                // First Input Delay
+                const fidObserver = new PerformanceObserver((list) => {
+                    for (const entry of list.getEntries()) {
+                        console.log('FID:', entry.processingStart - entry.startTime);
+                    }
+                });
+                fidObserver.observe({entryTypes: ['first-input']});
+            }
         });
     }
 }
 
+// Preload critical resources
+function preloadResources() {
+    const criticalResources = [
+        '/downloads/evidence/evidence_pack.json',
+        '/downloads/audit/Unykorn_XAUFTH_uUSD_Audit_2025-09-18_manifest.json'
+    ];
+    
+    criticalResources.forEach(resource => {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = resource;
+        document.head.appendChild(link);
+    });
+}
+
+// Initialize all performance features
 trackPerformance();
+preloadResources();

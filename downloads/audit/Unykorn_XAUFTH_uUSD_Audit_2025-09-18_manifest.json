@@ -1,6 +1,8 @@
 {
   "audit_report": "Unykorn_XAUFTH_uUSD_Audit_2025-09-18.pdf",
-  "sha256": "1027c14974f8d61c151a502b874b1081dab47248ad8db4d558ed917a89e59619",
+  "sha256": "a58a8a0f6416ffae884b8a1a89637ee7d41b103468ae0b448e10f19446f2f6cc",
   "signed_by": "Burnzy (Auditor)",
-  "date": "2025-09-18"
+  "date": "2025-09-18",
+  "file_size_bytes": 237,
+  "content_type": "application/pdf"
 }

@@ -74,6 +74,8 @@ async function loadKPIs() {
         const ev = await response.json();
         const k = ev.kpis_7d || {};
         const el = id => document.getElementById(id);
+        
+        // Update main KPIs
         el('kpi-redemptions').textContent = k.redemptions_per_day ?? '—';
         el('kpi-med').textContent = (k.median_latency_hours ?? '—') + 'h';
         el('kpi-p95').textContent = (k.p95_latency_hours ?? '—') + 'h';
@@ -81,8 +83,58 @@ async function loadKPIs() {
         el('kpi-stale').textContent = (k.stale_attestation_pct ?? '—') + '%';
         el('kpi-kdrift').textContent = (k.amm_k_drift_pct ?? '—') + '%';
         el('kpi-ratio').textContent = k.reserve_to_float_ratio ?? '—';
+        
+        // Update additional metrics if elements exist
+        if (k.total_tvl_usd) {
+            const tvlElement = el('tvl-amount');
+            if (tvlElement) {
+                tvlElement.textContent = '$' + (k.total_tvl_usd / 1000000).toFixed(2) + 'M';
+            }
+        }
+        
+        if (k.active_vaults) {
+            const vaultsElement = el('active-vaults');
+            if (vaultsElement) {
+                vaultsElement.textContent = k.active_vaults.toLocaleString();
+            }
+        }
+        
+        if (k.system_uptime_pct) {
+            const uptimeElement = el('system-uptime');
+            if (uptimeElement) {
+                uptimeElement.textContent = k.system_uptime_pct + '%';
+            }
+        }
+        
+        // Update network info in footer if available
+        if (ev.network_info) {
+            const chainElement = el('chain-info');
+            if (chainElement) {
+                chainElement.textContent = `${ev.network_info.chain_id} | ${ev.network}`;
+            }
+        }
+        
+        // Display last update time
+        if (ev.generation_timestamp) {
+            const lastUpdateElement = el('last-update');
+            if (lastUpdateElement) {
+                const updateTime = new Date(ev.generation_timestamp);
+                lastUpdateElement.textContent = `Last updated: ${updateTime.toLocaleString()}`;
+            }
+        }
+        
+        console.log('✅ KPIs loaded successfully from evidence pack');
     } catch (error) {
         console.error("Failed to load KPIs:", error);
+        // Graceful fallback - show offline status
+        const elements = ['kpi-redemptions', 'kpi-med', 'kpi-p95', 'kpi-signer', 'kpi-stale', 'kpi-kdrift', 'kpi-ratio'];
+        elements.forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.textContent === '—') {
+                el.textContent = 'Offline';
+                el.style.color = '#f39c12';
+            }
+        });
     }
 }
 

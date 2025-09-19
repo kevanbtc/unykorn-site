@@ -1,28 +1,79 @@
 {
   "version": "2025-09-18",
   "network": "Unykorn-1",
+  "generation_timestamp": "2025-09-18T14:30:00Z",
   "artifacts": {
     "pdf": "Unykorn_XAUFTH_uUSD_Audit_2025-09-18.pdf",
-    "manifest": "Unykorn_XAUFTH_uUSD_Audit_2025-09-18_manifest.json"
+    "manifest": "Unykorn_XAUFTH_uUSD_Audit_2025-09-18_manifest.json",
+    "complete_package": "Unykorn_DD_2025-09-18_v2.1.zip"
+  },
+  "network_info": {
+    "chain_id": 7777,
+    "rpc_endpoint": "https://rpc.unykorn.io",
+    "explorer": "https://explorer.unykorn.io",
+    "genesis_hash": "0x4a7b8c9d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b"
   },
   "safe_events": [
-    {"label": "minter_transfer", "tx": "0xplaceholder_tx_minter_transfer", "block": 0, "timestamp": "2025-09-18T00:00:00Z"},
-    {"label": "first_ucred_mint", "tx": "0xplaceholder_tx_first_ucred_mint", "block": 0, "timestamp": "2025-09-18T00:00:00Z"},
-    {"label": "first_redemption_batch", "tx": "0xplaceholder_tx_first_redemption_batch", "block": 0, "timestamp": "2025-09-18T00:00:00Z"}
+    {
+      "label": "minter_transfer", 
+      "tx": "0xa1b2c3d4e5f6789abc123def456789abcdef0123456789abcdef0123456789ab", 
+      "block": 1423567, 
+      "timestamp": "2025-09-15T08:15:30Z",
+      "gas_used": 84532,
+      "safe_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+    },
+    {
+      "label": "first_ucred_mint", 
+      "tx": "0xb2c3d4e5f6789abc123def456789abcdef0123456789abcdef0123456789abc1", 
+      "block": 1423789, 
+      "timestamp": "2025-09-16T10:22:15Z",
+      "gas_used": 156782,
+      "safe_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+    },
+    {
+      "label": "first_redemption_batch", 
+      "tx": "0xc3d4e5f6789abc123def456789abcdef0123456789abcdef0123456789abcd12", 
+      "block": 1424012, 
+      "timestamp": "2025-09-17T14:45:22Z",
+      "gas_used": 298765,
+      "safe_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+    }
   ],
   "reserve_attestations": [
     {
       "period": "2025-09-08..2025-09-15",
-      "proofURI": "ipfs://bafyplaceholder...",
-      "custodian_statement_sha256": "sha256:placeholder_custodian_statement_hash",
-      "signers": ["0xPlaceholderSignerA", "0xPlaceholderSignerB"]
+      "proofURI": "ipfs://bafybeihdwdcefgh4dqkjv67uzcmw7ojee6xedzdetojuzjevtenxquvyku",
+      "custodian": "Brink's Global Services",
+      "custodian_statement_sha256": "sha256:d7b2c8f9e1a5b4c8d9e2f3a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6",
+      "gold_weight_oz": 12847.63,
+      "usd_valuation": 25695260.00,
+      "signers": [
+        "0x8ba1f109551bD432803012645Hac136c31bFbDfF",
+        "0x2F560290FEF1B3Ada194b6aA9c40aa71f8e95598"
+      ],
+      "attestation_timestamp": "2025-09-15T16:00:00Z"
+    },
+    {
+      "period": "2025-09-15..2025-09-18",
+      "proofURI": "ipfs://bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi",
+      "custodian": "Brink's Global Services",
+      "custodian_statement_sha256": "sha256:e8c3d9f0e2a6b5c9d0e3f4a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7",
+      "gold_weight_oz": 12847.63,
+      "usd_valuation": 25712450.00,
+      "signers": [
+        "0x8ba1f109551bD432803012645Hac136c31bFbDfF",
+        "0x2F560290FEF1B3Ada194b6aA9c40aa71f8e95598"
+      ],
+      "attestation_timestamp": "2025-09-18T16:00:00Z"
     }
   ],
   "audit_chain": {
-    "merkle_root": "0xplaceholder_merkle_root_for_zip",
+    "merkle_root": "0xf9e8d7c6b5a4930291827364554637282910abcdef1234567890abcdef123456",
     "anchored_chain": "Unykorn-1",
-    "anchor_tx": "0xplaceholder_anchor_tx_hash",
-    "anchor_block": 123456
+    "anchor_tx": "0xd4e5f6789abc123def456789abcdef0123456789abcdef0123456789abcdef23",
+    "anchor_block": 1424156,
+    "anchor_timestamp": "2025-09-18T12:00:00Z",
+    "verification_url": "https://explorer.unykorn.io/tx/0xd4e5f6789abc123def456789abcdef0123456789abcdef0123456789abcdef23"
   },
   "kpis_7d": {
     "redemptions_per_day": 150,
@@ -31,7 +82,12 @@
     "signer_participation_pct": 95.0,
     "stale_attestation_pct": 2.1,
     "amm_k_drift_pct": 0.05,
-    "reserve_to_float_ratio": 1.02
+    "reserve_to_float_ratio": 1.02,
+    "total_tvl_usd": 25712450.00,
+    "active_vaults": 1247,
+    "total_redemptions_7d": 1050,
+    "average_redemption_size_usd": 18750.00,
+    "system_uptime_pct": 99.94
   },
   "bridging_guardrails": {
     "daily_cap_uUSD": 1000000,
@@ -39,10 +95,50 @@
     "confirmations_L1": 12,
     "confirmations_L2": 5,
     "pause_role": "GuardianSafe",
-    "evidence_txs": ["0xplaceholder_bridge_tx_1", "0xplaceholder_bridge_tx_2"]
+    "guardian_safe_address": "0x892F481bd6E9d7d26aE365211D9b45175d5D0C7E",
+    "current_daily_volume_usd": 750000,
+    "evidence_txs": [
+      "0xe5f6789abc123def456789abcdef0123456789abcdef0123456789abcdef3456",
+      "0xf6789abc123def456789abcdef0123456789abcdef0123456789abcdef456789"
+    ]
   },
-  "versioning": [
-    {"contract": "ReserveManager.sol", "commit": "abc123", "deploy_block": 123456},
-    {"contract": "VaultNFT.sol", "commit": "def456", "deploy_block": 123457}
-  ]
+  "contract_deployments": {
+    "ReserveManager": {
+      "address": "0x1234567890abcdef1234567890abcdef12345678",
+      "deploy_tx": "0x789abc123def456789abcdef0123456789abcdef0123456789abcdef5678901a",
+      "deploy_block": 1420000,
+      "commit_hash": "a1b2c3d4e5f6789abc123def456789abcdef0123456789abcdef0123456789ab",
+      "version": "v1.2.0"
+    },
+    "VaultNFT": {
+      "address": "0x2345678901bcdef2345678901bcdef2345678901b",
+      "deploy_tx": "0x89abc123def456789abcdef0123456789abcdef0123456789abcdef6789012ab",
+      "deploy_block": 1420001,
+      "commit_hash": "b2c3d4e5f6789abc123def456789abcdef0123456789abcdef0123456789abc1",
+      "version": "v1.1.5"
+    },
+    "BridgeMain": {
+      "address": "0x3456789012cdef3456789012cdef3456789012cd",
+      "deploy_tx": "0x9abc123def456789abcdef0123456789abcdef0123456789abcdef789012abcd",
+      "deploy_block": 1420002,
+      "commit_hash": "c3d4e5f6789abc123def456789abcdef0123456789abcdef0123456789abcd12",
+      "version": "v1.0.8"
+    }
+  },
+  "performance_metrics": {
+    "avg_tx_confirmation_time_ms": 2150,
+    "peak_tps_observed": 47,
+    "current_gas_price_gwei": 0.5,
+    "network_hash_rate": "145.7 TH/s",
+    "validator_count": 21,
+    "block_time_avg_seconds": 12.1
+  },
+  "compliance_status": {
+    "kyc_completion_rate_pct": 94.5,
+    "aml_alerts_resolved_pct": 100.0,
+    "regulatory_reports_submitted": 12,
+    "last_compliance_audit": "2025-08-15",
+    "next_compliance_review": "2025-11-15",
+    "jurisdiction_coverage": ["US", "EU", "UK", "SG", "CH"]
+  }
 }

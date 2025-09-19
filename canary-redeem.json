@@ -1,0 +1,72 @@
+{
+  "meta": {
+    "version": "1.0",
+    "chainId": 7777,
+    "createdFromSafeAddress": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e",
+    "createdFromOwners": [
+      "0x8ba1f109551bD432803012645Hac136c31bFbDfF",
+      "0x2F560290FEF1B3Ada194b6aA9c40aa71f8e95598",
+      "0x892F481bd6E9d7d26aE365211D9b45175d5D0C7E"
+    ],
+    "name": "Canary Redemption Test - Vault 123",
+    "description": "Test redemption for vault ID 123 to validate Safe integration and redemption flow",
+    "txBuilderVersion": "1.16.0",
+    "createdAt": 1726660200000
+  },
+  "transactions": [
+    {
+      "to": "0x2345678901bcdef2345678901bcdef2345678901b",
+      "value": "0",
+      "data": "0x84c63355000000000000000000000000000000000000000000000000000000000000007b00000000000000000000000000000000000000000000000000000000000000604a7b8c9d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b000000000000000000000000000000000000000000000000000000000000000a43616e617279546573740000000000000000000000000000000000000000000000",
+      "contractMethod": {
+        "inputs": [
+          {
+            "name": "vaultId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "redemptionProof",
+            "type": "bytes32",
+            "internalType": "bytes32"
+          },
+          {
+            "name": "metadata",
+            "type": "string",
+            "internalType": "string"
+          }
+        ],
+        "name": "redeem",
+        "payable": false
+      },
+      "contractInputsValues": {
+        "vaultId": "123",
+        "redemptionProof": "0x4a7b8c9d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b",
+        "metadata": "CanaryTest"
+      }
+    }
+  ],
+  "canary_details": {
+    "vault_id": 123,
+    "owner": "0x8ba1f109551bD432803012645Hac136c31bFbDfF",
+    "collateral_amount": "100000000000000000000",
+    "collateral_token": "XAUFTH",
+    "redemption_timestamp": "2025-09-18T14:30:00Z",
+    "expected_outcome": "successful_redemption",
+    "test_purpose": "Validate end-to-end redemption flow through Gnosis Safe",
+    "validation_checklist": [
+      "Safe JSON format validation",
+      "Multi-signature requirement check",
+      "Event emission verification",
+      "NFT burn confirmation",
+      "Collateral release validation"
+    ]
+  },
+  "execution_notes": {
+    "gas_estimate": 298765,
+    "required_confirmations": 2,
+    "timeout_hours": 24,
+    "rollback_procedure": "Manual intervention via Guardian Safe",
+    "monitoring": "Real-time event watching enabled"
+  }
+}

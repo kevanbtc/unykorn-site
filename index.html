@@ -29,6 +29,8 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNiIgZmlsbD0iIzJjM2U1MCIvPgo8Y2lyY2xlIGN4PSIxNiIgY3k9IjE2IiByPSIxMCIgc3Ryb2tlPSIjZjM5YzEyIiBzdHJva2Utd2lkdGg9IjIiLz4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iNiIgZmlsbD0iIzM0OThkYiIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSI4IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlU8L3RleHQ+Cjwvc3ZnPg==">
     
     <link rel="stylesheet" href="styles.css">
+    <script defer src="charts.js"></script>
+    <script defer src="script.js"></script>
 </head>
 <body>
     <a href="#main" class="skip-link">Skip to main content</a>
@@ -60,56 +62,112 @@
             </blockquote>
             <div class="scorecard">
                 <h3>System Scorecard</h3>
-                <ul>
-                    <li>Security: 28/30</li>
-                    <li>Compliance: 18/25</li>
-                    <li>Reliability: 18/20</li>
-                    <li>Scalability: 13/15</li>
-                    <li>Observability: 8/10</li>
-                </ul>
+                <div class="scorecard-content">
+                    <div class="scorecard-chart">
+                        <canvas id="scorecard-chart" width="200" height="200"></canvas>
+                    </div>
+                    <ul>
+                        <li>Security: <span class="score security">28/30</span></li>
+                        <li>Compliance: <span class="score compliance">18/25</span></li>
+                        <li>Reliability: <span class="score reliability">18/20</span></li>
+                        <li>Scalability: <span class="score scalability">13/15</span></li>
+                        <li>Observability: <span class="score observability">8/10</span></li>
+                    </ul>
+                </div>
                 <p><strong>Overall: 85/100</strong></p>
             </div>
         </section>
 
         <section id="architecture">
             <h2>Technical Architecture</h2>
-            <div class="diagram">
-                <svg width="800" height="400">
-                    <!-- Simple architecture diagram -->
-                    <rect x="50" y="50" width="100" height="50" fill="#4CAF50" />
-                    <text x="100" y="75" text-anchor="middle" fill="white">User</text>
-                    
-                    <rect x="200" y="50" width="100" height="50" fill="#2196F3" />
-                    <text x="250" y="75" text-anchor="middle" fill="white">Discord Bot</text>
-                    
-                    <rect x="350" y="50" width="100" height="50" fill="#FF9800" />
-                    <text x="400" y="75" text-anchor="middle" fill="white">Gnosis Safe</text>
-                    
-                    <rect x="500" y="50" width="100" height="50" fill="#9C27B0" />
-                    <text x="550" y="75" text-anchor="middle" fill="white">Unykorn-1 L1</text>
-                    
-                    <rect x="200" y="150" width="100" height="50" fill="#607D8B" />
-                    <text x="250" y="175" text-anchor="middle" fill="white">Relayers</text>
-                    
-                    <rect x="350" y="150" width="100" height="50" fill="#795548" />
-                    <text x="400" y="175" text-anchor="middle" fill="white">PostgreSQL</text>
-                    
-                    <rect x="500" y="150" width="100" height="50" fill="#3F51B5" />
-                    <text x="550" y="175" text-anchor="middle" fill="white">Grafana</text>
-                    
-                    <!-- Arrows -->
-                    <defs>
-                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
-                            <polygon points="0 0, 10 3.5, 0 7" fill="#333" />
-                        </marker>
-                    </defs>
-                    <line x1="150" y1="75" x2="200" y2="75" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
-                    <line x1="300" y1="75" x2="350" y2="75" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
-                    <line x1="450" y1="75" x2="500" y2="75" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
-                    <line x1="250" y1="100" x2="250" y2="150" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
-                    <line x1="400" y1="100" x2="400" y2="150" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
-                    <line x1="550" y1="100" x2="550" y2="150" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)" />
-                </svg>
+            <div class="architecture-content">
+                <div class="diagram">
+                    <svg width="800" height="400" viewBox="0 0 800 400" class="interactive-diagram">
+                        <!-- Enhanced architecture diagram with animations -->
+                        <!-- User Layer -->
+                        <g class="diagram-node user-node" data-tooltip="End users interact through Discord Bot interface">
+                            <rect x="50" y="50" width="100" height="50" rx="8" fill="#4CAF50" class="node-bg"/>
+                            <text x="100" y="75" text-anchor="middle" fill="white" font-weight="bold">User</text>
+                            <circle class="pulse-dot" cx="150" cy="75" r="3" fill="#4CAF50" opacity="0"/>
+                        </g>
+                        
+                        <!-- Discord Bot Layer -->
+                        <g class="diagram-node bot-node" data-tooltip="Discord Bot processes commands and manages user interactions">
+                            <rect x="200" y="50" width="100" height="50" rx="8" fill="#2196F3" class="node-bg"/>
+                            <text x="250" y="75" text-anchor="middle" fill="white" font-weight="bold">Discord Bot</text>
+                            <circle class="pulse-dot" cx="300" cy="75" r="3" fill="#2196F3" opacity="0"/>
+                        </g>
+                        
+                        <!-- Gnosis Safe Layer -->
+                        <g class="diagram-node safe-node" data-tooltip="Multi-signature wallet for secure transaction execution">
+                            <rect x="350" y="50" width="100" height="50" rx="8" fill="#FF9800" class="node-bg"/>
+                            <text x="400" y="75" text-anchor="middle" fill="white" font-weight="bold">Gnosis Safe</text>
+                            <circle class="pulse-dot" cx="450" cy="75" r="3" fill="#FF9800" opacity="0"/>
+                        </g>
+                        
+                        <!-- L1 Chain Layer -->
+                        <g class="diagram-node l1-node" data-tooltip="Unykorn-1 L1 blockchain with smart contracts">
+                            <rect x="500" y="50" width="100" height="50" rx="8" fill="#9C27B0" class="node-bg"/>
+                            <text x="550" y="75" text-anchor="middle" fill="white" font-weight="bold">Unykorn-1 L1</text>
+                            <circle class="pulse-dot" cx="600" cy="75" r="3" fill="#9C27B0" opacity="0"/>
+                        </g>
+                        
+                        <!-- Relayers Layer -->
+                        <g class="diagram-node relayer-node" data-tooltip="Oracle and event relayers for off-chain data">
+                            <rect x="200" y="150" width="100" height="50" rx="8" fill="#607D8B" class="node-bg"/>
+                            <text x="250" y="175" text-anchor="middle" fill="white" font-weight="bold">Relayers</text>
+                            <circle class="pulse-dot" cx="300" cy="175" r="3" fill="#607D8B" opacity="0"/>
+                        </g>
+                        
+                        <!-- PostgreSQL Layer -->
+                        <g class="diagram-node db-node" data-tooltip="PostgreSQL database for system state and monitoring">
+                            <rect x="350" y="150" width="100" height="50" rx="8" fill="#336791" class="node-bg"/>
+                            <text x="400" y="175" text-anchor="middle" fill="white" font-weight="bold">PostgreSQL</text>
+                            <circle class="pulse-dot" cx="450" cy="175" r="3" fill="#336791" opacity="0"/>
+                        </g>
+                        
+                        <!-- Grafana Layer -->
+                        <g class="diagram-node monitor-node" data-tooltip="Grafana monitoring and observability dashboard">
+                            <rect x="500" y="150" width="100" height="50" rx="8" fill="#F46800" class="node-bg"/>
+                            <text x="550" y="175" text-anchor="middle" fill="white" font-weight="bold">Grafana</text>
+                            <circle class="pulse-dot" cx="600" cy="175" r="3" fill="#F46800" opacity="0"/>
+                        </g>
+                        
+                        <!-- Connection Lines with Animation -->
+                        <defs>
+                            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                <polygon points="0 0, 10 3.5, 0 7" fill="#666" />
+                            </marker>
+                        </defs>
+                        
+                        <!-- Animated connection lines -->
+                        <line class="connection-line" x1="150" y1="75" x2="200" y2="75" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <line class="connection-line" x1="300" y1="75" x2="350" y2="75" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <line class="connection-line" x1="450" y1="75" x2="500" y2="75" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <line class="connection-line" x1="250" y1="100" x2="250" y2="150" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <line class="connection-line" x1="400" y1="100" x2="400" y2="150" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <line class="connection-line" x1="550" y1="100" x2="550" y2="150" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <line class="connection-line" x1="300" y1="175" x2="350" y2="175" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        <line class="connection-line" x1="450" y1="175" x2="500" y2="175" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)"/>
+                        
+                        <!-- Data Flow Indicators -->
+                        <circle class="data-flow" cx="175" cy="75" r="4" fill="#4CAF50" opacity="0">
+                            <animate attributeName="cx" values="175;175;225" dur="3s" repeatCount="indefinite"/>
+                            <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite"/>
+                        </circle>
+                    </svg>
+                </div>
+                <div class="diagram-legend">
+                    <h4>Data Flow</h4>
+                    <ul>
+                        <li><span class="legend-color user"></span>User Commands</li>
+                        <li><span class="legend-color processing"></span>Bot Processing</li>
+                        <li><span class="legend-color security"></span>Safe Validation</li>
+                        <li><span class="legend-color execution"></span>L1 Execution</li>
+                    </ul>
+                </div>
             </div>
         </section>
 
@@ -183,6 +241,16 @@
 
         <section id="status">
             <h2>System Status</h2>
+            
+            <!-- Metrics Trend Chart -->
+            <div class="metrics-dashboard">
+                <div class="chart-container">
+                    <h3>Redemptions Trend (6 Months)</h3>
+                    <canvas id="metrics-trend" width="600" height="200"></canvas>
+                </div>
+            </div>
+            
+            <!-- Current Metrics Grid -->
             <div class="status-grid">
                 <div class="metric">
                     <h4>Redemptions/Day</h4>
@@ -201,15 +269,21 @@
                     <span id="ratio">1.02</span>
                 </div>
             </div>
-            <ul class="kpis">
-                <li>Redemptions/day: <span id="kpi-redemptions">—</span></li>
-                <li>Median latency: <span id="kpi-med">—</span></li>
-                <li>p95 latency: <span id="kpi-p95">—</span></li>
-                <li>Signer participation: <span id="kpi-signer">—</span></li>
-                <li>Stale attestations: <span id="kpi-stale">—</span></li>
-                <li>AMM k drift: <span id="kpi-kdrift">—</span></li>
-                <li>Reserve/Float: <span id="kpi-ratio">—</span></li>
-            </ul>
+            
+            <!-- Detailed KPIs -->
+            <div class="kpi-section">
+                <h3>Key Performance Indicators (7-day average)</h3>
+                <ul class="kpis">
+                    <li>Redemptions/day: <span id="kpi-redemptions">—</span></li>
+                    <li>Median latency: <span id="kpi-med">—</span></li>
+                    <li>p95 latency: <span id="kpi-p95">—</span></li>
+                    <li>Signer participation: <span id="kpi-signer">—</span></li>
+                    <li>Stale attestations: <span id="kpi-stale">—</span></li>
+                    <li>AMM k drift: <span id="kpi-kdrift">—</span></li>
+                    <li>Reserve/Float: <span id="kpi-ratio">—</span></li>
+                </ul>
+            </div>
+            
             <button onclick="updateMetrics()">Refresh Metrics</button>
         </section>
 

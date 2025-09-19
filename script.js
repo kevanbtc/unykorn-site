@@ -272,6 +272,70 @@ function enhancedFetch(url, options = {}) {
     return fetchWithRetry();
 }
 
+// Initialize interactive tooltips for diagram
+function initTooltips() {
+    const tooltip = document.createElement('div');
+    tooltip.className = 'tooltip';
+    document.body.appendChild(tooltip);
+    
+    const diagramNodes = document.querySelectorAll('.diagram-node[data-tooltip]');
+    
+    diagramNodes.forEach(node => {
+        node.addEventListener('mouseenter', (e) => {
+            const tooltipText = e.currentTarget.getAttribute('data-tooltip');
+            tooltip.textContent = tooltipText;
+            tooltip.classList.add('show');
+        });
+        
+        node.addEventListener('mousemove', (e) => {
+            tooltip.style.left = e.pageX + 10 + 'px';
+            tooltip.style.top = e.pageY + 10 + 'px';
+        });
+        
+        node.addEventListener('mouseleave', () => {
+            tooltip.classList.remove('show');
+        });
+    });
+}
+
+// Add search functionality for documentation
+function initDocumentationSearch() {
+    const searchContainer = document.getElementById('docs');
+    if (!searchContainer) return;
+    
+    // Create search input
+    const searchInput = document.createElement('input');
+    searchInput.type = 'text';
+    searchInput.placeholder = 'Search documentation...';
+    searchInput.className = 'doc-search';
+    
+    const searchWrapper = document.createElement('div');
+    searchWrapper.className = 'search-wrapper';
+    searchWrapper.appendChild(searchInput);
+    
+    const docsTitle = searchContainer.querySelector('h2');
+    docsTitle.insertAdjacentElement('afterend', searchWrapper);
+    
+    const docLinks = searchContainer.querySelectorAll('li a');
+    
+    searchInput.addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        
+        docLinks.forEach(link => {
+            const listItem = link.parentElement;
+            const linkText = link.textContent.toLowerCase();
+            
+            if (linkText.includes(searchTerm) || searchTerm === '') {
+                listItem.style.display = 'block';
+                listItem.style.opacity = '1';
+            } else {
+                listItem.style.display = 'none';
+                listItem.style.opacity = '0';
+            }
+        });
+    });
+}
+
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize core functionality
@@ -285,6 +349,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initNavHighlighting();
     addActiveNavStyles();
     initLazyLoading();
+    initCharts();
+    initTooltips();
+    initDocumentationSearch();
     
     // Initialize PWA features
     registerServiceWorker();
